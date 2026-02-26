@@ -38,7 +38,7 @@ export function setupHandlers(bot) {
 
         // Foydalanuvchiga har doim link yuborish so‘rovi
         if (!text.startsWith('http') && !file && userId !== ADMIN_ID) {
-            return bot.sendMessage(userId, "📤 Iltimos link yuboring:");
+            return bot.sendMessage(userId, "📤 Foydalanuvchi linkni yuboring:");
         }
 
         // Faylni tekshirish
@@ -113,7 +113,7 @@ export function setupHandlers(bot) {
 
         // Oddiy foydalanuvchi inline tugmalari
         if (data === 'new_link') {
-            bot.sendMessage(userId, "📤 Iltimos yangi link yuboring:");
+            bot.sendMessage(userId, "📤  yangi link yuboring:");
         }
         if (data === 'send_admin') {
             bot.sendMessage(ADMIN_ID, `📨 Foydalanuvchi ${userId} javob yubordi.`);

@@ -24,11 +24,11 @@ export function formatStatsUz(stats, safePercent, engineDetails) {
 - Zararli (Malicious): ${stats.malicious}
 - Shubhali (Suspicious): ${stats.suspicious}
 - Aniqlanmagan (Undetected): ${stats.undetected}
-- Umumiy xavfsizlik foiz: ${safePercent}%
-         -Batafsil 👇👇👇
+-Batafsil 👇👇👇
 🖥️  Antivirus dasturlari natijalari: 
-${engineDetails || "Ma'lumot mavjud emas"}
 
-ℹ️ Link tekshiruvi Unicon Soft tomonidan amalga oshirildi
+- Umumiy xavfsizlik foiz: ${safePercent}%
+
+ℹ️ Link tekshiruvi Unicon Soft tashkiloti  tomonidan amalga oshirildi
 `;
 }
