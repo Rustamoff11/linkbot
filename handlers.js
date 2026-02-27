@@ -198,7 +198,7 @@ export function setupHandlers(bot) {
 🛡 Xolat: ${status}
 ⚠️ Xavf darajasi: ${risk}%
 
-🔎 Tekshirdi 64 ta antivirus🔰:
+🔎 Tekshirdi 70 ta antivirus🔰:
 ⚠️ havfli:  ${malicious}
 🚷 shubhali:  ${suspicious} 
 ✅ havfsiz:  ${harmless} 
