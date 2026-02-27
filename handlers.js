@@ -191,18 +191,20 @@ export function setupHandlers(bot) {
             else if (suspicious > 0) status = "🟡 SHUBHALI";
 
             const message = `
-╔════════════════╗
+╔════════════════
 🌐 ${url}
-╚════════════════╝
+╚════════════════
 
 🛡 Xolat: ${status}
 ⚠️ Xavf darajasi: ${risk}%
 
 🔎 Tekshirdi 64 ta antivirus🔰:
-🔴 havfli: ⚠️ ${malicious}
-🟡 shubhali: 🚷 ${suspicious} 
-🟢 havfsiz: ✅ ${harmless} 
+⚠️ havfli:  ${malicious}
+🚷 shubhali:  ${suspicious} 
+✅ havfsiz:  ${harmless} 
+╔════════════════════════════════════════════════════════════════╗
 ❗Unicon Soft oltiariq tumani hodimlari tomonidan tekshirildi❗
+╚════════════════════════════════════════════════════════════════╝
 `;
 
             if (malicious > 0) {
