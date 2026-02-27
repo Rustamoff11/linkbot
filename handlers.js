@@ -163,7 +163,7 @@ export function setupHandlers(bot) {
 
         const user = addUser(msg.from);
 
-        if (user.blocked) return bot.sendMessage(msg.chat.id, "🚫 Siz bloklangansiz.");
+        if (user.blocked) return bot.sendMessage(msg.chat.id, "🚫 Siz bloklangansiz. Masul hodim bilan bog'laning ");
 
         const url = msg.text.trim();
         if (!isValidUrl(url)) return bot.sendMessage(msg.chat.id, "❌ To‘g‘ri URL (manzil) yuboring.");
