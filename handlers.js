@@ -198,10 +198,10 @@ export function setupHandlers(bot) {
 🛡 Xolat: ${status}
 ⚠️ Xavf darajasi: ${risk}%
 
-🔎 yuqori havfsizlik:
-🔴 havfli: ${malicious}
-🟡 shubhali: ${suspicious} 
-🟢 havf aniqlanmadi: ${harmless}  
+🔎 Tekshirdi 64 ta antivirus🔰:
+🔴 havfli: ⚠️ ${malicious}
+🟡 shubhali: 🚷 ${suspicious} 
+🟢 havfsiz: ✅ ${harmless} 
 ❗Unicon Soft oltiariq tumani hodimlari tomonidan tekshirildi❗
 `;
 
