@@ -1,0 +1,410 @@
+[
+  {
+    "id": 1772188653466,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": null,
+    "feedback": null,
+    "time": "27/02/2026, 3:37:33 pm"
+  },
+  {
+    "id": 1772188653592,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": null,
+    "feedback": null,
+    "time": "27/02/2026, 3:37:33 pm"
+  },
+  {
+    "id": 1772188763361,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": null,
+    "feedback": null,
+    "time": "27/02/2026, 3:39:23 pm"
+  },
+  {
+    "id": 1772188763391,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": null,
+    "feedback": null,
+    "time": "27/02/2026, 3:39:23 pm"
+  },
+  {
+    "id": 1772188763394,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": null,
+    "feedback": null,
+    "time": "27/02/2026, 3:39:23 pm"
+  },
+  {
+    "id": 1772189024218,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": null,
+    "feedback": null,
+    "time": "27/02/2026, 3:43:44 pm"
+  },
+  {
+    "id": 1772189024255,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": "qanday yordam kerak",
+    "feedback": "Yaxshi",
+    "time": "27/02/2026, 3:43:44 pm",
+    "answer_time": "27/02/2026, 3:44:03 pm"
+  },
+  {
+    "id": 1772189024258,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": null,
+    "feedback": null,
+    "time": "27/02/2026, 3:43:44 pm"
+  },
+  {
+    "id": 1772189593370,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 3:53:13 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772189593401,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": "ahvollar qalay",
+    "operator": "GroupAnonymousBot",
+    "feedback": "Yaxshi",
+    "time": "27/02/2026, 3:53:13 pm",
+    "answer_time": "27/02/2026, 3:53:23 pm"
+  },
+  {
+    "id": 1772189827541,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 3:57:07 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772189827576,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 3:57:07 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772189982794,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": "nima gap",
+    "operator": "GroupAnonymousBot",
+    "feedback": "Yaxshi",
+    "time": "27/02/2026, 3:59:42 pm",
+    "answer_time": "27/02/2026, 3:59:49 pm"
+  },
+  {
+    "id": 1772190221840,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom ahvollar qalay",
+    "answer": "norm",
+    "operator": "Admin",
+    "feedback": "Yaxshi",
+    "time": "27/02/2026, 4:03:41 pm",
+    "answer_time": "27/02/2026, 4:03:50 pm"
+  },
+  {
+    "id": 1772190263300,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "salom",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 4:04:23 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772190263302,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "salom",
+    "answer": "hello",
+    "operator": "Admin",
+    "feedback": "Yaxshi",
+    "time": "27/02/2026, 4:04:23 pm",
+    "answer_time": "27/02/2026, 4:04:37 pm"
+  },
+  {
+    "id": 1772190562027,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": ".",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 4:09:22 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772190616937,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "salom uniconchila",
+    "answer": "salom",
+    "operator": "Admin",
+    "feedback": "Yaxshi",
+    "time": "27/02/2026, 4:10:16 pm",
+    "answer_time": "27/02/2026, 4:10:25 pm"
+  },
+  {
+    "id": 1772190934590,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "salom kimdir bormi",
+    "answer": "ha men borman",
+    "operator": "Admin",
+    "feedback": "Yaxshi",
+    "time": "27/02/2026, 4:15:34 pm",
+    "answer_time": "27/02/2026, 4:16:02 pm"
+  },
+  {
+    "id": 1772190981302,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "https://railway.com/project/e1653f0b-0bf2-49af-8ac2-b464052eb1f1?environmentId=4986605c-8d98-4242-b322-dfd36d0a2f6b",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 4:16:21 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772191326347,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "Gʻanijon javob yozib burgut",
+    "answer": "salomatmisiz",
+    "operator": "Admin",
+    "feedback": "Yaxshi",
+    "time": "27/02/2026, 4:22:06 pm",
+    "answer_time": "27/02/2026, 4:22:28 pm"
+  },
+  {
+    "id": 1772191332021,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "Burgut 🦅",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 4:22:12 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772191370143,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "https://ijara.soliq.uz/login",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 4:22:50 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772191583386,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": null,
+    "feedback": null,
+    "operator": null,
+    "time": "27/02/2026, 4:26:23 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772191611154,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "salom",
+    "answer": null,
+    "feedback": null,
+    "operator": null,
+    "time": "27/02/2026, 4:26:51 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772191668149,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "salom",
+    "answer": null,
+    "feedback": null,
+    "operator": null,
+    "time": "27/02/2026, 4:27:48 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772191748752,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "Salom",
+    "answer": null,
+    "feedback": null,
+    "operator": null,
+    "time": "27/02/2026, 4:29:08 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772192501728,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "Salom",
+    "answer": null,
+    "feedback": null,
+    "operator": null,
+    "time": "27/02/2026, 4:41:41 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772192849016,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "Davlat",
+    "answer": null,
+    "feedback": null,
+    "time": "27/02/2026, 4:47:29 pm"
+  },
+  {
+    "id": 1772192927195,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "Ddf",
+    "answer": null,
+    "feedback": null,
+    "time": "27/02/2026, 4:48:47 pm"
+  },
+  {
+    "id": 1772192952869,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "Zas",
+    "answer": null,
+    "feedback": null,
+    "time": "27/02/2026, 4:49:12 pm"
+  },
+  {
+    "id": 1772193032612,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 4:50:32 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772193621370,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "salom",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 5:00:21 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772193654484,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "/admin",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 5:00:54 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772193823445,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 5:03:43 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772195032289,
+    "userId": 6030329675,
+    "username": "Rustamov0036",
+    "question": "salom",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 5:23:52 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772195056390,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "salom",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 5:24:16 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772195201504,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "salom",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 5:26:41 pm",
+    "answer_time": null
+  },
+  {
+    "id": 1772215080973,
+    "userId": 2041858446,
+    "username": "Xnovic",
+    "question": "Salom",
+    "answer": null,
+    "operator": null,
+    "feedback": null,
+    "time": "27/02/2026, 10:58:00 pm",
+    "answer_time": null
+  }
+]

@@ -12,8 +12,18 @@
   },
   "dependencies": {
     "axios": "^1.13.5",
+    "docx": "^9.6.0",
     "dotenv": "^17.3.1",
     "node-fetch": "^3.3.2",
     "node-telegram-bot-api": "^0.61.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rustamoff11/linkbot.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/Rustamoff11/linkbot/issues"
+  },
+  "homepage": "https://github.com/Rustamoff11/linkbot#readme"
 }

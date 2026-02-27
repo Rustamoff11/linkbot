@@ -5,27 +5,12 @@
     "blocked": false,
     "actions": [
       {
-        "date": "2026-02-26T17:09:20.235Z",
-        "action": "URL yubordi: http://testsafebrowsing.appspot.com/s/phishing.html"
+        "date": "2026-02-27T19:58:56.566Z",
+        "action": "URL yubordi: Https://kun.uz"
       },
       {
-        "date": "2026-02-26T17:09:20.253Z",
-        "action": "URL yubordi: http://testsafebrowsing.appspot.com/s/phishing.html"
-      },
-      {
-        "date": "2026-02-26T17:09:51.320Z",
-        "action": "URL yubordi: http://testsafebrowsing.appspot.com/s/phishing.html"
-      }
-    ]
-  },
-  {
-    "id": 6030329675,
-    "username": "Rustamov0036",
-    "blocked": false,
-    "actions": [
-      {
-        "date": "2026-02-26T17:05:50.465Z",
-        "action": "URL yubordi: https://edo.ijro.uz/welcome"
+        "date": "2026-02-27T20:10:22.241Z",
+        "action": "URL yubordi: https://kun.uz"
       }
     ]
   }
