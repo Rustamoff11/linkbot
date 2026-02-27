@@ -86,13 +86,13 @@ export function setupHandlers(bot) {
     // START
     bot.onText(/\/start/, (msg) => {
         addUser(msg.from);
-        bot.sendMessage(msg.chat.id, "👋 Xush kelibsiz! URL yuboring.");
+        bot.sendMessage(msg.chat.id, "👋 Xush kelibsiz! Foydalanish uchun  URL (Link)  yuboring.");
     });
 
     // ADMIN PANEL
     bot.onText(/\/admin/, (msg) => {
         if (msg.from.id !== ADMIN_ID)
-            return bot.sendMessage(msg.chat.id, "❌ Siz admin emassiz.");
+            return bot.sendMessage(msg.chat.id, "❌ Siz admin emassiz ushbu buyruqdan faqat admin foydalanishi mumkin.");
 
         const users = getUsers();
         let text = `🛡 ADMIN PANEL\n\n👥 Jami foydalanuvchilar: ${users.length}\n\n`;
@@ -166,11 +166,11 @@ export function setupHandlers(bot) {
         if (user.blocked) return bot.sendMessage(msg.chat.id, "🚫 Siz bloklangansiz.");
 
         const url = msg.text.trim();
-        if (!isValidUrl(url)) return bot.sendMessage(msg.chat.id, "❌ To‘g‘ri URL yuboring.");
+        if (!isValidUrl(url)) return bot.sendMessage(msg.chat.id, "❌ To‘g‘ri URL (manzil) yuboring.");
 
         logAction(user.id, `URL yubordi: ${url}`);
 
-        bot.sendMessage(msg.chat.id, "🔍 Tekshirilmoqda...");
+        bot.sendMessage(msg.chat.id, "🔍 Biroz kuting Tekshirilmoqda...");
 
         try {
             const id = await submitUrl(url);
@@ -191,9 +191,9 @@ export function setupHandlers(bot) {
             else if (suspicious > 0) status = "🟡 SHUBHALI";
 
             const message = `
-╔══════════════╗
+╔════════════════╗
 🌐 ${url}
-╚══════════════╝
+╚════════════════╝
 
 🛡 Xolat: ${status}
 ⚠️ Xavf darajasi: ${risk}%
@@ -202,6 +202,7 @@ export function setupHandlers(bot) {
 🔴 ${malicious}
 🟡 ${suspicious}
 🟢 ${harmless}
+❗Unicon Soft oltiariq tumani tomonidan tekshirildi❗
 `;
 
             if (malicious > 0) {
