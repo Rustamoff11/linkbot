@@ -198,11 +198,11 @@ export function setupHandlers(bot) {
 🛡 Xolat: ${status}
 ⚠️ Xavf darajasi: ${risk}%
 
-🔎 VirusTotal:
-🔴 ${malicious}
-🟡 ${suspicious}
-🟢 ${harmless}
-❗Unicon Soft oltiariq tumani tomonidan tekshirildi❗
+🔎 yuqori havfsizlik:
+🔴 havfli  ${malicious}
+🟡 shubhali ${suspicious} 
+🟢 havf aniqlanmadi${harmless}  
+❗Unicon Soft oltiariq tumani hodimlari tomonidan tekshirildi❗
 `;
 
             if (malicious > 0) {
