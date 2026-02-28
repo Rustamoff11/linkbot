@@ -1,6 +1,5 @@
 import TelegramBot from 'node-telegram-bot-api';
-import fs from "fs";
-import { TELEGRAM_TOKEN, ADMIN_GROUP_ID } from './config.js';
+import { TELEGRAM_TOKEN } from './config.js';
 import { setupSupport, setupGroupReplyListener } from './modules/support.js';
 import { setupLinkScanner } from './linkScanner.js';
 import { setupAdminPanel } from './modules/admin.js';
@@ -15,7 +14,7 @@ const linkScannerActiveUsers = new Set();
 bot.onText(/\/start/, (msg) => {
   const userId = msg.from.id;
 
-  bot.sendMessage(userId, "Quydagi xizmatlardan birini tanlang:", {
+  bot.sendMessage(userId, "Quyidagi xizmatlardan birini tanlang:", {
     reply_markup: {
       inline_keyboard: [
         [{ text: "📨 Hodimga murojaat yuborish", callback_data: "support" }],
@@ -35,7 +34,8 @@ bot.on("callback_query", async (query) => {
       supportActiveUsers.add(userId);
 
       setupSupport(bot, query.from, () => {
-        supportActiveUsers.delete(userId); // murojaatdan keyin o‘chadi
+        // murojaat tugagach support holatini o‘chiramiz
+        supportActiveUsers.delete(userId);
       });
 
       bot.sendMessage(userId, "✍️ Murojaatingizni yozing:");
@@ -58,21 +58,26 @@ bot.on("callback_query", async (query) => {
 bot.on("message", (msg) => {
   const userId = msg.from.id;
 
-  // buyruqlarni tekshirmaymiz
+  // buyruqlarni o‘tkazib yuboramiz
   if (msg.text && msg.text.startsWith("/")) return;
 
-  // agar support yoki scanner aktiv bo‘lsa → jim
+  // agar support aktiv bo‘lsa → jim
   if (supportActiveUsers.has(userId)) return;
+
+  // agar scanner aktiv bo‘lsa → jim
   if (linkScannerActiveUsers.has(userId)) return;
 
   // oddiy xabar yozsa
-  bot.sendMessage(userId, "❗ Iltimos, avval /start buyrug‘ini bosing va tugma tanlang.");
+  bot.sendMessage(
+    userId,
+    "❗ Botni ishga tushirish uchun /start buyrug‘ini yuboring."
+  );
 });
 
-// ===== GURUH REPLY =====
+// ===== GURUH REPLY LISTENER =====
 setupGroupReplyListener(bot);
 
-// ===== ADMIN =====
+// ===== ADMIN PANEL =====
 bot.onText(/\/admin/, (msg) => setupAdminPanel(bot, msg));
 
 console.log("✅ Bot ishga tushdi...");

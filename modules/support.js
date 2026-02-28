@@ -75,8 +75,9 @@ function saveUserAction(user, text, feedback = null) {
 // ==================================
 // SUPPORT
 // ==================================
-export function setupSupport(bot, user) {
+export function setupSupport(bot, user, onFinish) {
   const userId = user.id;
+
   bot.sendMessage(userId, "📩 Iltimos, savolingizni yozing:");
 
   const listener = async (msg) => {
@@ -113,12 +114,19 @@ export function setupSupport(bot, user) {
       record.group_message_id = sent.message_id;
       writeJSON(DB_FILE, tickets);
 
-      bot.sendMessage(userId, "✅ Murojaatingiz yuborildi. Javobni bir necha daqiqada qabul qilasiz.");
+      bot.sendMessage(
+        userId,
+        "✅ Murojaatingiz yuborildi. Javobni bir necha daqiqada qabul qilasiz."
+      );
     } catch (err) {
       console.error("Guruhga yuborishda xato:", err);
     }
 
+    // LISTENERNI O‘CHIRAMIZ
     bot.removeListener("message", listener);
+
+    // MUHIM: SUPPORT HOLATINI TUGATAMIZ
+    if (onFinish) onFinish();
   };
 
   bot.on("message", listener);
@@ -147,7 +155,7 @@ export function setupGroupReplyListener(bot) {
       {
         reply_markup: {
           inline_keyboard: [
-            [ 
+            [
               { text: "👍 Qoniqarli", callback_data: `good_${rec.id}` },
               { text: "👎 Qoniqarsiz", callback_data: `bad_${rec.id}` }
             ]
@@ -178,7 +186,6 @@ export function setupGroupReplyListener(bot) {
       const user = users.find(u => u.userId === rec.userId);
       if (user) {
         if (!Array.isArray(user.actions)) user.actions = [];
-        // Admin javobini oxirgi harakat sifatida qo‘shamiz
         user.actions.push({
           text: `Admin javobi: ${rec.answer}`,
           time: now(),
