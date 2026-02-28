@@ -38,7 +38,7 @@ bot.on("callback_query", async (query) => {
         supportActiveUsers.delete(userId);
       });
 
-      bot.sendMessage(userId, "✍️ Murojaatingizni yozing:");
+      // bot.sendMessage(userId, "✍️ Murojaatingizni yozing:");
     }
   }
 
@@ -48,7 +48,7 @@ bot.on("callback_query", async (query) => {
       setupLinkScanner(bot, userId);
       linkScannerActiveUsers.add(userId);
     }
-    bot.sendMessage(userId, "🔍 URL yuboring:");
+    // bot.sendMessage(userId, "🔍 URL yuboring:");
   }
 
   bot.answerCallbackQuery(query.id);
