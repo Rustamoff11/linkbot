@@ -6,18 +6,12 @@ import { setupLinkScanner } from './linkScanner.js';
 import { setupAdminPanel } from './modules/admin.js';
 
 const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
-const USERS_FILE = "./modules/users.json";
 
-// ===== JSON helper =====
-function readUsers() {
-  if (!fs.existsSync(USERS_FILE)) fs.writeFileSync(USERS_FILE, "[]");
-  let content = fs.readFileSync(USERS_FILE, "utf-8");
-  if (!content.trim()) content = "[]";
-  try { return JSON.parse(content); } 
-  catch { return []; }
-}
+// ACTIVE USERLAR
+const supportActiveUsers = new Set();
+const linkScannerActiveUsers = new Set();
 
-// ===== /START MENYUSI =====
+// ===== /START =====
 bot.onText(/\/start/, (msg) => {
   const userId = msg.from.id;
 
@@ -32,23 +26,29 @@ bot.onText(/\/start/, (msg) => {
 });
 
 // ===== INLINE TUGMALAR =====
-let linkScannerActiveUsers = new Set();
-
 bot.on("callback_query", async (query) => {
   const userId = query.from.id;
 
-  // Support tugmasi
+  // SUPPORT
   if (query.data === "support") {
-    setupSupport(bot, query.from);
+    if (!supportActiveUsers.has(userId)) {
+      supportActiveUsers.add(userId);
+
+      setupSupport(bot, query.from, () => {
+        supportActiveUsers.delete(userId); // murojaatdan keyin o‘chadi
+      });
+
+      bot.sendMessage(userId, "✍️ Murojaatingizni yozing:");
+    }
   }
 
-  // Scanner tugmasi
+  // SCANNER
   if (query.data === "scanner") {
     if (!linkScannerActiveUsers.has(userId)) {
-      setupLinkScanner(bot, userId); // har bir user uchun alohida listener
+      setupLinkScanner(bot, userId);
       linkScannerActiveUsers.add(userId);
     }
-    bot.sendMessage(userId, "🔍 Link Scanner ishga tushdi! URL yuboring.");
+    bot.sendMessage(userId, "🔍 URL yuboring:");
   }
 
   bot.answerCallbackQuery(query.id);
@@ -58,16 +58,21 @@ bot.on("callback_query", async (query) => {
 bot.on("message", (msg) => {
   const userId = msg.from.id;
 
-  // Admin va bot xabarlari uchun tekshiruvdan o'tkazmaymiz
-  if (userId === Number(ADMIN_GROUP_ID)) return;
+  // buyruqlarni tekshirmaymiz
+  if (msg.text && msg.text.startsWith("/")) return;
 
-  // Endi hech qanday bloklash tekshiruvi yo'q, foydalanuvchi xabar yuborishi mumkin
+  // agar support yoki scanner aktiv bo‘lsa → jim
+  if (supportActiveUsers.has(userId)) return;
+  if (linkScannerActiveUsers.has(userId)) return;
+
+  // oddiy xabar yozsa
+  bot.sendMessage(userId, "❗ Iltimos, avval /start buyrug‘ini bosing va tugma tanlang.");
 });
 
-// ===== GURUH REPLY LISTENER =====
+// ===== GURUH REPLY =====
 setupGroupReplyListener(bot);
 
-// ===== ADMIN PANEL =====
+// ===== ADMIN =====
 bot.onText(/\/admin/, (msg) => setupAdminPanel(bot, msg));
 
 console.log("✅ Bot ishga tushdi...");
