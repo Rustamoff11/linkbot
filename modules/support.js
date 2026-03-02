@@ -114,17 +114,17 @@ export function setupSupport(bot, user, onFinish) {
       record.group_message_id = sent.message_id;
       writeJSON(DB_FILE, tickets);
 
-      await bot.sendMessage(
-        userId,
-        "✅ Murojaatingiz yuborildi.",
-        {
-          reply_markup: {
-            inline_keyboard: [
-              [{ text: "❌ Suhbatni yakunlash", callback_data: "support_end" }]
-            ]
-          }
-        }
-      );
+      // await bot.sendMessage(
+      //   userId,
+      //   // "✅ Murojaatingiz yuborildi.",
+      //   {
+      //     reply_markup: {
+      //       inline_keyboard: [
+      //         [{ text: "❌ Suhbatni yakunlash", callback_data: "support_end" }]
+      //       ]
+      //     }
+      //   }
+      // );
     } catch (err) {
       console.error("Guruhga yuborishda xato:", err);
     }

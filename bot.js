@@ -90,7 +90,7 @@ bot.on("message", async (msg) => {
     // ⚠️ Bu yerda setupSupport admin ga forward qiladi
     // Biz faqat yakunlash tugmasini chiqaramiz
 
-    await bot.sendMessage(userId, "❓ Suhbatni yakunlash uchun knopkani bosing yoki habar qoldiring?", {
+    await bot.sendMessage(userId, "❓habaringiz yetkazildi biroz kuting...  Suhbatni yakunlash uchun knopkani bosing yoki habar qoldiring?", {
       reply_markup: {
         inline_keyboard: [
           [{ text: "❌ Suhbatni yakunlash", callback_data: "support_end" }]
