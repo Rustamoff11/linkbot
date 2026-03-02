@@ -344,18 +344,18 @@ export function setupLinkScanner(bot) {
 🛡 YAKUNIY HOLAT: ${finalStatus}
 
 ━━━━━━━━━━━━━━
-🧪 VirusTotal:
+🧪 birinchi scanner:
    Holat: ${vtStatus}
    🔴 Havfli: ${malicious}
    🟡 Shubhali: ${suspicious}
-   ✅ Xavfsiz: ${harmless}
+   ✅ Xavfsiz: ${harmless}ta antivirus havfsiz deb topdi
 
 ━━━━━━━━━━━━━━
-🛡 Google Safe Browsing:
+🛡 Ikkinchi scaner:
    Holat: ${googleStatus}
 
 ━━━━━━━━━━━━━━
-🔐 Unicon-Soft Security Scanner
+🔐 Unicon-Soft Oltiariq Security Scanner
 `;
 
       bot.sendMessage(msg.chat.id, message);
