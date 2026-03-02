@@ -37,7 +37,7 @@ bot.on("callback_query", async (query) => {
 
       supportActiveUsers.add(userId);
 
-      await bot.sendMessage(userId, "✍️ Murojaatingizni yozing:");
+      // await bot.sendMessage(userId, "✍️ Murojaatingizni yozing:");
 
       // support modul ishga tushadi
       setupSupport(bot, query.from, () => {
@@ -90,7 +90,7 @@ bot.on("message", async (msg) => {
     // ⚠️ Bu yerda setupSupport admin ga forward qiladi
     // Biz faqat yakunlash tugmasini chiqaramiz
 
-    await bot.sendMessage(userId, "❓ Suhbatni yakunlaysizmi?", {
+    await bot.sendMessage(userId, "❓ Suhbatni yakunlash uchun knopkani bosing yoki habar qoldiring?", {
       reply_markup: {
         inline_keyboard: [
           [{ text: "❌ Suhbatni yakunlash", callback_data: "support_end" }]
