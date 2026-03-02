@@ -355,7 +355,7 @@ export function setupLinkScanner(bot) {
    Holat: ${googleStatus}
 
 ━━━━━━━━━━━━━━
-🔐 Unicon-Soft Oltiariq Security Scanner
+🔐 Unicon-Soft Oltiariq @ScannerLink_bot 
 `;
 
       bot.sendMessage(msg.chat.id, message);
