@@ -4,6 +4,9 @@ import { ADMIN_GROUP_ID } from "../config.js";
 const DB_FILE = "./data/user.json";
 const USERS_FILE = "../users.json";
 
+// 🧠 Aktiv support userlar
+const activeSupportUsers = new Set();
+
 // ===============================
 // JSON o‘qish / saqlash
 // ===============================
@@ -74,15 +77,26 @@ function saveUserAction(user, text, feedback = null) {
 }
 
 // ==================================
-// SUPPORT (CHEKSIZ DAVOM ETADI)
+// SUPPORT
 // ==================================
 export function setupSupport(bot, user, onFinish) {
   const userId = user.id;
+
+  // agar allaqachon supportda bo‘lsa qayta ochmaymiz
+  if (activeSupportUsers.has(userId)) return;
+
+  activeSupportUsers.add(userId);
 
   bot.sendMessage(userId, "📩 Iltimos, savolingizni yozing:");
 
   const messageListener = async (msg) => {
     if (msg.chat.id !== userId || !msg.text) return;
+
+    // agar /start bossa — supportni majburan yopamiz
+    if (msg.text === "/start") {
+      stopSupport();
+      return;
+    }
 
     const tickets = readJSON(DB_FILE);
 
@@ -113,18 +127,6 @@ export function setupSupport(bot, user, onFinish) {
 
       record.group_message_id = sent.message_id;
       writeJSON(DB_FILE, tickets);
-
-      // await bot.sendMessage(
-      //   userId,
-      //   // "✅ Murojaatingiz yuborildi.",
-      //   {
-      //     reply_markup: {
-      //       inline_keyboard: [
-      //         [{ text: "❌ Suhbatni yakunlash", callback_data: "support_end" }]
-      //       ]
-      //     }
-      //   }
-      // );
     } catch (err) {
       console.error("Guruhga yuborishda xato:", err);
     }
@@ -134,18 +136,21 @@ export function setupSupport(bot, user, onFinish) {
 
   // ===== SUPPORTNI YOPISH =====
   const endListener = async (q) => {
-    if (q.data === "support_end" && q.from.id === userId) {
+    if (q.data !== "support_end") return;
+    if (q.from.id !== userId) return;
 
-      bot.removeListener("message", messageListener);
-      bot.removeListener("callback_query", endListener);
-
-      await bot.sendMessage(userId, "✅ Suhbat yakunlandi.");
-
-      if (onFinish) onFinish();
-    }
+    stopSupport();
+    await bot.sendMessage(userId, "✅ Suhbat yakunlandi.");
+    if (onFinish) onFinish();
   };
 
   bot.on("callback_query", endListener);
+
+  function stopSupport() {
+    activeSupportUsers.delete(userId);
+    bot.removeListener("message", messageListener);
+    bot.removeListener("callback_query", endListener);
+  }
 }
 
 // ==================================
