@@ -2,6 +2,7 @@ import fs from "fs";
 import { ADMIN_ID } from "../config.js";
 
 const USERS_FILE = "./data/users.json";
+const PAGE_SIZE = 10;
 
 // ===== JSON helper =====
 function readUsers() {
@@ -34,65 +35,13 @@ export function setupAdminPanel(bot) {
   bot.removeTextListener(/\/admin/);
 
   bot.onText(/\/admin/, async (msg) => {
-    try {
-      if (msg.from.id !== Number(ADMIN_ID)) {
-        return bot.sendMessage(msg.chat.id, "❌ Siz admin emassiz");
-      }
-
-      const users = readUsers();
-
-      if (!Array.isArray(users) || users.length === 0) {
-        return bot.sendMessage(msg.chat.id, "📂 Ma’lumot yo‘q");
-      }
-
-      let text = `🛡 <b>ADMIN PANEL</b>\n`;
-      text += `📊 Jami foydalanuvchilar: <b>${users.length}</b>\n`;
-      text += `─────────────────────────────\n\n`;
-
-      const inlineKeyboard = [];
-
-      users.slice(-50).reverse().forEach((u, i) => {
-        text += `<b>${i + 1}) 👤 @${escapeHTML(u.username || "no_username")}</b>\n`;
-        text += `🆔 ID: <code>${u.userId}</code>\n`;
-        text += `📈 Umumiy harakatlar: <b>${u.total_actions || 0}</b>\n`;
-
-        if (Array.isArray(u.actions) && u.actions.length > 0) {
-          text += `📜 Oxirgi 3 harakat:\n`;
-          const lastThree = u.actions.slice(-3).reverse();
-          lastThree.forEach((a, idx) => {
-            let feedbackText = a.feedback ? ` | Feedback: <b>${a.feedback}</b>` : "";
-            text += `  ${idx + 1}) ${escapeHTML(a.text)} — <i>${a.time}</i>${feedbackText}\n`;
-          });
-        } else {
-          text += `📜 Harakatlar: <i>Yo‘q</i>\n`;
-        }
-
-        const btnText = u.blocked
-          ? `✅ Blokdan chiqarish @${u.username}`
-          : `🚫 Bloklash @${u.username}`;
-
-        inlineKeyboard.push([{ text: btnText, callback_data: `block_${u.userId}` }]);
-
-        text += `─────────────────────────────\n`;
-      });
-
-      inlineKeyboard.push([{ text: "🧹 Users.json tozalash", callback_data: "clear_users" }]);
-
-      await bot.sendMessage(msg.chat.id, text, {
-        parse_mode: "HTML",
-        reply_markup: { inline_keyboard: inlineKeyboard }
-      });
-
-    } catch (err) {
-      console.error("Admin panel xato:", err);
-      bot.sendMessage(msg.chat.id, "❌ Xatolik yuz berdi");
+    if (msg.from.id !== Number(ADMIN_ID)) {
+      return bot.sendMessage(msg.chat.id, "❌ Siz admin emassiz");
     }
+    return sendAdminPage(bot, msg.chat.id, 1);
   });
 
-  // ✅ CALLBACK FAQAT BIR MARTA
-  bot.on("callback_query", (q) => {
-    if (!q.data.startsWith("block_") && q.data !== "clear_users") return;
-
+  bot.on("callback_query", async (q) => {
     if (q.from.id !== Number(ADMIN_ID)) {
       return bot.answerCallbackQuery(q.id, {
         text: "❌ Siz admin emassiz",
@@ -101,32 +50,96 @@ export function setupAdminPanel(bot) {
     }
 
     const data = q.data;
-    const users = readUsers();
 
-    // block
-    if (data.startsWith("block_")) {
-      const userId = Number(data.split("_")[1]);
-      const user = users.find(u => u.userId === userId);
-      if (!user) return;
+    // pagination
+    if (data.startsWith("page_")) {
+      const page = Number(data.split("_")[1]);
+      await sendAdminPage(bot, q.message.chat.id, page, q.message.message_id);
+    }
 
-      user.blocked = !user.blocked;
-      writeUsers(users);
-
-      bot.answerCallbackQuery(q.id, {
-        text: user.blocked
-          ? `🚫 @${user.username} bloklandi`
-          : `✅ @${user.username} blokdan chiqarildi`,
-        show_alert: true
-      });
+    // export
+    if (data === "export_users") {
+      if (!fs.existsSync(USERS_FILE)) return;
+      await bot.sendDocument(q.message.chat.id, USERS_FILE);
+      bot.answerCallbackQuery(q.id, { text: "📤 users.json yuborildi" });
     }
 
     // clear
     if (data === "clear_users") {
       writeUsers([]);
       bot.answerCallbackQuery(q.id, {
-        text: "✅ users.json tozalandi",
+        text: "🧹 users.json tozalandi",
         show_alert: true
       });
+      await sendAdminPage(bot, q.message.chat.id, 1, q.message.message_id);
     }
   });
+}
+
+// ===== Sahifa yuborish =====
+async function sendAdminPage(bot, chatId, page = 1, editMessageId = null) {
+  const users = readUsers();
+
+  if (!users.length) {
+    return bot.sendMessage(chatId, "📂 Ma’lumot yo‘q");
+  }
+
+  const totalPages = Math.ceil(users.length / PAGE_SIZE);
+  if (page < 1) page = 1;
+  if (page > totalPages) page = totalPages;
+
+  const start = (page - 1) * PAGE_SIZE;
+  const pageUsers = users.slice().reverse().slice(start, start + PAGE_SIZE);
+
+  let text = `🛡 <b>ADMIN PANEL</b>\n`;
+  text += `📊 Jami foydalanuvchilar: <b>${users.length}</b>\n`;
+  text += `📄 Sahifa: <b>${page}/${totalPages}</b>\n`;
+  text += `─────────────────────────────\n\n`;
+
+  pageUsers.forEach((u, i) => {
+    text += `<b>${start + i + 1}) 👤 @${escapeHTML(u.username || "no_username")}</b>\n`;
+    text += `🆔 ID: <code>${u.userId}</code>\n`;
+    text += `📈 Umumiy harakatlar: <b>${u.total_actions || 0}</b>\n`;
+
+    if (Array.isArray(u.actions) && u.actions.length > 0) {
+      const lastThree = u.actions.slice(-3).reverse();
+      text += `📜 Oxirgi 3 harakat:\n`;
+      lastThree.forEach((a, idx) => {
+        let feedbackText = a.feedback ? ` | Feedback: <b>${a.feedback}</b>` : "";
+        text += `  ${idx + 1}) ${escapeHTML(a.text)} — <i>${a.time}</i>${feedbackText}\n`;
+      });
+    } else {
+      text += `📜 Harakatlar: <i>Yo‘q</i>\n`;
+    }
+
+    text += `─────────────────────────────\n`;
+  });
+
+  const keyboard = [];
+
+  const navRow = [];
+  if (page > 1) navRow.push({ text: "⬅️ Oldingi", callback_data: `page_${page - 1}` });
+  if (page < totalPages) navRow.push({ text: "➡️ Keyingi", callback_data: `page_${page + 1}` });
+
+  if (navRow.length) keyboard.push(navRow);
+
+  keyboard.push([
+    { text: "📤 Export users.json", callback_data: "export_users" },
+    { text: "🧹 Tozalash", callback_data: "clear_users" }
+  ]);
+
+  const options = {
+    parse_mode: "HTML",
+    reply_markup: { inline_keyboard: keyboard }
+  };
+
+  if (editMessageId) {
+    return bot.editMessageText(text, {
+      chat_id: chatId,
+      message_id: editMessageId,
+      ...options
+    });
+  } else {
+    return bot.sendMessage(chatId, text, options);
+  }
 }
