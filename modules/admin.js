@@ -1,7 +1,7 @@
 import fs from "fs";
 import { ADMIN_ID } from "../config.js";
 
-const USERS_FILE = "../users.json";
+const USERS_FILE = "./data/users.json";
 
 // ===== JSON helper =====
 function readUsers() {
@@ -67,14 +67,15 @@ export function setupAdminPanel(bot) {
           text += `📜 Harakatlar: <i>Yo‘q</i>\n`;
         }
 
-        // Bloklash/ochish tugmasi
-        const btnText = u.blocked ? `✅ Bloklangan @${u.username}` : `🚫 Bloklash @${u.username}`;
+        const btnText = u.blocked
+          ? `✅ Blokdan chiqarish @${u.username}`
+          : `🚫 Bloklash @${u.username}`;
+
         inlineKeyboard.push([{ text: btnText, callback_data: `block_${u.userId}` }]);
 
         text += `─────────────────────────────\n`;
       });
 
-      // users.json tozalash tugmasi
       inlineKeyboard.push([{ text: "🧹 Users.json tozalash", callback_data: "clear_users" }]);
 
       await bot.sendMessage(msg.chat.id, text, {
@@ -82,44 +83,50 @@ export function setupAdminPanel(bot) {
         reply_markup: { inline_keyboard: inlineKeyboard }
       });
 
-      // Inline callback listener
-      bot.on("callback_query", (q) => {
-        if (q.from.id !== Number(ADMIN_ID)) {
-          return bot.answerCallbackQuery(q.id, { text: "❌ Siz admin emassiz", show_alert: true });
-        }
-
-        const data = q.data;
-
-        // Foydalanuvchini bloklash/ochish
-        if (data.startsWith("block_")) {
-          const userId = Number(data.split("_")[1]);
-          const users = readUsers();
-          const user = users.find(u => u.userId === userId);
-          if (!user) return;
-
-          user.blocked = !user.blocked; // bloklash/ochish
-          writeUsers(users);
-
-          bot.answerCallbackQuery(q.id, { 
-            text: user.blocked ? `✅ @${user.username} bloklandi` : `✅ @${user.username} blok ochildi`, 
-            show_alert: true 
-          });
-
-          // Admin panelni yangilash
-          bot.emit("text", { chat: { id: msg.chat.id }, from: { id: ADMIN_ID }, text: "/admin" });
-        }
-
-        // users.json tozalash
-        if (data === "clear_users") {
-          writeUsers([]);
-          bot.answerCallbackQuery(q.id, { text: "✅ users.json fayli tozalandi", show_alert: true });
-          bot.sendMessage(msg.chat.id, "📂 users.json fayli tozalandi!");
-        }
-      });
-
     } catch (err) {
       console.error("Admin panel xato:", err);
       bot.sendMessage(msg.chat.id, "❌ Xatolik yuz berdi");
+    }
+  });
+
+  // ✅ CALLBACK FAQAT BIR MARTA
+  bot.on("callback_query", (q) => {
+    if (!q.data.startsWith("block_") && q.data !== "clear_users") return;
+
+    if (q.from.id !== Number(ADMIN_ID)) {
+      return bot.answerCallbackQuery(q.id, {
+        text: "❌ Siz admin emassiz",
+        show_alert: true
+      });
+    }
+
+    const data = q.data;
+    const users = readUsers();
+
+    // block
+    if (data.startsWith("block_")) {
+      const userId = Number(data.split("_")[1]);
+      const user = users.find(u => u.userId === userId);
+      if (!user) return;
+
+      user.blocked = !user.blocked;
+      writeUsers(users);
+
+      bot.answerCallbackQuery(q.id, {
+        text: user.blocked
+          ? `🚫 @${user.username} bloklandi`
+          : `✅ @${user.username} blokdan chiqarildi`,
+        show_alert: true
+      });
+    }
+
+    // clear
+    if (data === "clear_users") {
+      writeUsers([]);
+      bot.answerCallbackQuery(q.id, {
+        text: "✅ users.json tozalandi",
+        show_alert: true
+      });
     }
   });
 }
