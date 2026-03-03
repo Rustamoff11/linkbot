@@ -140,7 +140,7 @@ export function setupSupport(bot, user, onFinish) {
     if (q.from.id !== userId) return;
 
     stopSupport();
-    await bot.sendMessage(userId, "✅ Suhbat yakunlandi. Qayta foydalanish uchun /Start buyrug'ini bosing ");
+    await bot.sendMessage(userId, "✅ Suhbat yakunlandi. Qayta foydalanish uchun /start buyrug'ini bosing ");
     if (onFinish) onFinish();
   };
 
