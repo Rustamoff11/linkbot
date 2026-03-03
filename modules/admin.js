@@ -1,7 +1,7 @@
 import fs from "fs";
 import { ADMIN_ID } from "../config.js";
 
-const USERS_FILE = "./data/users.json";
+const USERS_FILE = "../users.json";
 const PAGE_SIZE = 10;
 
 // ===== JSON helper =====
