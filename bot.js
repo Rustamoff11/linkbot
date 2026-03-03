@@ -1,18 +1,16 @@
 import TelegramBot from "node-telegram-bot-api";
 import { TELEGRAM_TOKEN } from "./config.js";
 import { setupSupport, setupGroupReplyListener } from "./modules/support.js";
-import { setupLinkScanner } from "./linkScanner.js";
+import { setupLinkScanner, activateScanner } from "./linkScanner.js";
 import { initAdmin } from "./modules/admin.js";
 
 const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 
 // ===== ACTIVE USERLAR =====
 const supportActiveUsers = new Set();
-const linkScannerActiveUsers = new Set();
 
 // ================= START =================
 bot.onText(/\/start/, async (msg) => {
-  // ❗ Botlardan kelgan xabarlarni bloklaymiz
   if (msg.from.is_bot) return;
 
   const userId = msg.from.id;
@@ -31,9 +29,8 @@ bot.onText(/\/start/, async (msg) => {
   );
 });
 
-// ================= CALLBACK HANDLER =================
+// ================= CALLBACK =================
 bot.on("callback_query", async (query) => {
-  // ❗ Botlardan kelgan callbackni bloklaymiz
   if (query.from.is_bot) return;
 
   const userId = query.from.id;
@@ -55,17 +52,14 @@ bot.on("callback_query", async (query) => {
   // ===== SUPPORT END =====
   if (data === "support_end") {
     supportActiveUsers.delete(userId);
-
     await bot.sendMessage(userId, "✅ Suhbat yakunlandi.");
     return bot.answerCallbackQuery(query.id);
   }
 
   // ===== SCANNER =====
   if (data === "scanner") {
-    if (!linkScannerActiveUsers.has(userId)) {
-      linkScannerActiveUsers.add(userId);
-      setupLinkScanner(bot, userId);
-    }
+
+    activateScanner(userId); // 🔥 faqat aktiv qilamiz
 
     await bot.sendMessage(
       userId,
@@ -75,12 +69,10 @@ bot.on("callback_query", async (query) => {
     return bot.answerCallbackQuery(query.id);
   }
 
-  return;
 });
 
 // ================= GLOBAL MESSAGE =================
 bot.on("message", async (msg) => {
-  // ❗ MUHIM: Botlardan kelgan xabarlarni to‘liq bloklash
   if (msg.from.is_bot) return;
 
   const userId = msg.from.id;
@@ -104,17 +96,13 @@ bot.on("message", async (msg) => {
     return;
   }
 
-  // ===== SCANNER ACTIVE =====
-  if (linkScannerActiveUsers.has(userId)) return;
-
-  // ===== DEFAULT =====
-  await bot.sendMessage(
-    userId,
-    "❗ Botni ishga tushirish uchun /start buyrug‘ini yuboring."
-  );
 });
 
-// ================= INIT MODULLAR =================
+// ================= INIT =================
+
+// 🔥 Scanner listener faqat 1 marta
+setupLinkScanner(bot);
+
 setupGroupReplyListener(bot);
 initAdmin(bot);
 
