@@ -4,15 +4,13 @@ import { ADMIN_ID } from "../config.js";
 const USERS_FILE = "../users.json";
 const PAGE_SIZE = 10;
 
-// ===== JSON helper =====
 function readUsers() {
   if (!fs.existsSync(USERS_FILE)) fs.writeFileSync(USERS_FILE, "[]");
   let content = fs.readFileSync(USERS_FILE, "utf-8");
   if (!content.trim()) content = "[]";
   try {
     return JSON.parse(content);
-  } catch (err) {
-    console.error("❌ JSON parse xato:", err);
+  } catch {
     return [];
   }
 }
@@ -21,7 +19,6 @@ function writeUsers(users) {
   fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
 }
 
-// ===== HTML escape =====
 function escapeHTML(text = "") {
   return text
     .replace(/&/g, "&amp;")
@@ -29,7 +26,6 @@ function escapeHTML(text = "") {
     .replace(/>/g, "&gt;");
 }
 
-// ===== Admin panel =====
 export function setupAdminPanel(bot) {
 
   bot.removeTextListener(/\/admin/);
@@ -41,7 +37,21 @@ export function setupAdminPanel(bot) {
     return sendAdminPage(bot, msg.chat.id, 1);
   });
 
+  // 🔐 FAQAT ADMIN CALLBACKLARI
   bot.on("callback_query", async (q) => {
+
+    const data = q.data;
+
+    // ❗ ADMIN callback emas bo‘lsa umuman tegmaymiz
+    if (
+      !data.startsWith("page_") &&
+      data !== "export_users" &&
+      data !== "clear_users"
+    ) {
+      return;
+    }
+
+    // ❗ Endi admin tekshiruv
     if (q.from.id !== Number(ADMIN_ID)) {
       return bot.answerCallbackQuery(q.id, {
         text: "❌ Siz admin emassiz",
@@ -49,97 +59,41 @@ export function setupAdminPanel(bot) {
       });
     }
 
-    const data = q.data;
-
-    // pagination
+    // ===== Pagination =====
     if (data.startsWith("page_")) {
       const page = Number(data.split("_")[1]);
-      await sendAdminPage(bot, q.message.chat.id, page, q.message.message_id);
+      await sendAdminPage(
+        bot,
+        q.message.chat.id,
+        page,
+        q.message.message_id
+      );
+      return bot.answerCallbackQuery(q.id);
     }
 
-    // export
+    // ===== Export =====
     if (data === "export_users") {
-      if (!fs.existsSync(USERS_FILE)) return;
-      await bot.sendDocument(q.message.chat.id, USERS_FILE);
-      bot.answerCallbackQuery(q.id, { text: "📤 users.json yuborildi" });
+      if (fs.existsSync(USERS_FILE)) {
+        await bot.sendDocument(q.message.chat.id, USERS_FILE);
+      }
+      return bot.answerCallbackQuery(q.id, {
+        text: "📤 users.json yuborildi"
+      });
     }
 
-    // clear
+    // ===== Clear =====
     if (data === "clear_users") {
       writeUsers([]);
-      bot.answerCallbackQuery(q.id, {
+      await sendAdminPage(
+        bot,
+        q.message.chat.id,
+        1,
+        q.message.message_id
+      );
+      return bot.answerCallbackQuery(q.id, {
         text: "🧹 users.json tozalandi",
         show_alert: true
       });
-      await sendAdminPage(bot, q.message.chat.id, 1, q.message.message_id);
     }
   });
-}
-
-// ===== Sahifa yuborish =====
-async function sendAdminPage(bot, chatId, page = 1, editMessageId = null) {
-  const users = readUsers();
-
-  if (!users.length) {
-    return bot.sendMessage(chatId, "📂 Ma’lumot yo‘q");
-  }
-
-  const totalPages = Math.ceil(users.length / PAGE_SIZE);
-  if (page < 1) page = 1;
-  if (page > totalPages) page = totalPages;
-
-  const start = (page - 1) * PAGE_SIZE;
-  const pageUsers = users.slice().reverse().slice(start, start + PAGE_SIZE);
-
-  let text = `🛡 <b>ADMIN PANEL</b>\n`;
-  text += `📊 Jami foydalanuvchilar: <b>${users.length}</b>\n`;
-  text += `📄 Sahifa: <b>${page}/${totalPages}</b>\n`;
-  text += `─────────────────────────────\n\n`;
-
-  pageUsers.forEach((u, i) => {
-    text += `<b>${start + i + 1}) 👤 @${escapeHTML(u.username || "no_username")}</b>\n`;
-    text += `🆔 ID: <code>${u.userId}</code>\n`;
-    text += `📈 Umumiy harakatlar: <b>${u.total_actions || 0}</b>\n`;
-
-    if (Array.isArray(u.actions) && u.actions.length > 0) {
-      const lastThree = u.actions.slice(-3).reverse();
-      text += `📜 Oxirgi 3 harakat:\n`;
-      lastThree.forEach((a, idx) => {
-        let feedbackText = a.feedback ? ` | Feedback: <b>${a.feedback}</b>` : "";
-        text += `  ${idx + 1}) ${escapeHTML(a.text)} — <i>${a.time}</i>${feedbackText}\n`;
-      });
-    } else {
-      text += `📜 Harakatlar: <i>Yo‘q</i>\n`;
-    }
-
-    text += `─────────────────────────────\n`;
-  });
-
-  const keyboard = [];
-
-  const navRow = [];
-  if (page > 1) navRow.push({ text: "⬅️ Oldingi", callback_data: `page_${page - 1}` });
-  if (page < totalPages) navRow.push({ text: "➡️ Keyingi", callback_data: `page_${page + 1}` });
-
-  if (navRow.length) keyboard.push(navRow);
-
-  keyboard.push([
-    { text: "📤 Export users.json", callback_data: "export_users" },
-    { text: "🧹 Tozalash", callback_data: "clear_users" }
-  ]);
-
-  const options = {
-    parse_mode: "HTML",
-    reply_markup: { inline_keyboard: keyboard }
-  };
-
-  if (editMessageId) {
-    return bot.editMessageText(text, {
-      chat_id: chatId,
-      message_id: editMessageId,
-      ...options
-    });
-  } else {
-    return bot.sendMessage(chatId, text, options);
-  }
 }
