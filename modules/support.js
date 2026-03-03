@@ -1,7 +1,7 @@
 import fs from "fs";
 import { ADMIN_GROUP_ID } from "../config.js";
 
-const DB_FILE = "./data/user.json";
+const DB_FILE = "../users.json";
 const USERS_FILE = "../users.json";
 
 // 🧠 Aktiv support userlar
