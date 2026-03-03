@@ -12,6 +12,9 @@ const linkScannerActiveUsers = new Set();
 
 // ================= START =================
 bot.onText(/\/start/, async (msg) => {
+  // ❗ Botlardan kelgan xabarlarni bloklaymiz
+  if (msg.from.is_bot) return;
+
   const userId = msg.from.id;
 
   await bot.sendMessage(
@@ -30,6 +33,9 @@ bot.onText(/\/start/, async (msg) => {
 
 // ================= CALLBACK HANDLER =================
 bot.on("callback_query", async (query) => {
+  // ❗ Botlardan kelgan callbackni bloklaymiz
+  if (query.from.is_bot) return;
+
   const userId = query.from.id;
   const data = query.data;
 
@@ -51,7 +57,6 @@ bot.on("callback_query", async (query) => {
     supportActiveUsers.delete(userId);
 
     await bot.sendMessage(userId, "✅ Suhbat yakunlandi.");
-
     return bot.answerCallbackQuery(query.id);
   }
 
@@ -70,17 +75,17 @@ bot.on("callback_query", async (query) => {
     return bot.answerCallbackQuery(query.id);
   }
 
-  // ❗ admin callbacklar admin.js ichida filter qilinadi
   return;
 });
 
 // ================= GLOBAL MESSAGE =================
 bot.on("message", async (msg) => {
+  // ❗ MUHIM: Botlardan kelgan xabarlarni to‘liq bloklash
+  if (msg.from.is_bot) return;
+
   const userId = msg.from.id;
 
   if (!msg.text) return;
-
-  // buyruqlarni o‘tkazib yuboramiz
   if (msg.text.startsWith("/")) return;
 
   // ===== SUPPORT ACTIVE =====
@@ -96,7 +101,6 @@ bot.on("message", async (msg) => {
         }
       }
     );
-
     return;
   }
 
